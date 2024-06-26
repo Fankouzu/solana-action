@@ -98,7 +98,7 @@ export const POST = async (req: Request) => {
     }
 
     const connection = new Connection(
-      process.env.RPC_URL ?? clusterApiUrl("devnet")
+      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
     );
 
     // ensure the receiving account will be rent exempt

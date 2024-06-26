@@ -62,7 +62,7 @@ export const POST = async (req: Request) => {
     transaction.feePayer = account;
 
     const connection = new Connection(
-      process.env.RPC_URL ?? clusterApiUrl("devnet")
+      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
     );
     transaction.recentBlockhash = (
       await connection.getLatestBlockhash()
