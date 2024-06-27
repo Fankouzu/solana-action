@@ -197,6 +197,7 @@ export const POST = async (req: Request) => {
         transaction,
         message: `Create ${amount} ${symbol} to ${account.toBase58()}`,
       },
+      signers: [mint],
     });
 
     return Response.json(payload, {
