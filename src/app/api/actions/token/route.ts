@@ -27,12 +27,16 @@ import {
   clusterApiUrl,
   Connection,
   Keypair,
+  LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
 import dotenv from "dotenv";
+import { DEFAULT_SOL_ADDRESS } from "../donate/const";
 dotenv.config();
+
+const fee = 0.01;
 
 export const GET = async (req: Request) => {
   try {
@@ -46,8 +50,7 @@ export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "一键发行Solana Token",
       icon: new URL("/solana_devs.jpg", requestUrl.origin).toString(),
-      description:
-        "输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量;例如:USD Coin,USDC,100000",
+      description: `输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量;<br />例如:USD Coin,USDC,100000<br />手续费:${fee} SOL`,
       label: "",
       links: {
         actions: [
@@ -137,6 +140,11 @@ export const POST = async (req: Request) => {
     );
 
     const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: account,
+        toPubkey: DEFAULT_SOL_ADDRESS,
+        lamports: fee * LAMPORTS_PER_SOL,
+      }),
       SystemProgram.createAccount({
         fromPubkey: account,
         newAccountPubkey: mint.publicKey,
