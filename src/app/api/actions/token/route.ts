@@ -46,7 +46,7 @@ export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "一键发行Solana Token",
       icon: new URL("/solana_devs.jpg", requestUrl.origin).toString(),
-      description: "输入Metadata发行数字货币",
+      description: "输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量,URI;例如:USD Coin,USDC,100000,https://token.logo/usdc.jpg",
       label: "",
       links: {
         actions: [
@@ -57,7 +57,7 @@ export const GET = async (req: Request) => {
               {
                 name: "metadata",
                 label:
-                  "输入元数据,用逗号分隔,格式:名称,缩写,URI,数量;例如:USDC,USD Coin,https://token.logo/usdc.jpg,100000",
+                  "USD Coin,USDC,100000,https://token.logo/usdc.jpg",
                 required: true,
               },
             ],
