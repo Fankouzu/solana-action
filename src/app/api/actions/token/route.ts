@@ -50,7 +50,7 @@ export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "一键发行Solana Token",
       icon: new URL("/solana_devs.jpg", requestUrl.origin).toString(),
-      description: `输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量;<br />例如:USD Coin,USDC,100000<br />手续费:${fee} SOL`,
+      description: `输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量;例如:USD Coin,USDC,100000;手续费:${fee} SOL`,
       label: "",
       links: {
         actions: [
