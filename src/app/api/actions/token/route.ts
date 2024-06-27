@@ -89,7 +89,7 @@ export const POST = async (req: Request) => {
     const requestUrl = new URL(req.url);
     const { name, symbol, amount } = validatedQueryParams(requestUrl);
     const uri =
-      "https://arweave.net/7gXpJTC4E7k8hbbCSrtLPxkb1FyOJqP0n3LT9QcGkVg";
+      "https://arweave.net/3VERGxufuPOeXaqXgui2xLrtYO6n1mJxu0QqBi99qBY";
 
     const body: ActionPostRequest = await req.json();
 
