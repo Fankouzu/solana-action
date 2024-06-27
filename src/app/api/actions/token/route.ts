@@ -46,7 +46,8 @@ export const GET = async (req: Request) => {
     const payload: ActionGetResponse = {
       title: "一键发行Solana Token",
       icon: new URL("/solana_devs.jpg", requestUrl.origin).toString(),
-      description: "输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量,URI;例如:USD Coin,USDC,100000,https://token.logo/usdc.jpg",
+      description:
+        "输入Metadata发行数字货币,用逗号分隔,格式:名称,缩写,数量;例如:USD Coin,USDC,100000",
       label: "",
       links: {
         actions: [
@@ -56,8 +57,7 @@ export const GET = async (req: Request) => {
             parameters: [
               {
                 name: "metadata",
-                label:
-                  "USD Coin,USDC,100000,https://token.logo/usdc.jpg",
+                label: "USD Coin,USDC,100000",
                 required: true,
               },
             ],
@@ -87,7 +87,9 @@ export const OPTIONS = GET;
 export const POST = async (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
-    const [name, symbol, uri, amount] = validatedQueryParams(requestUrl);
+    const { name, symbol, amount } = validatedQueryParams(requestUrl);
+    const uri =
+      "https://arweave.net/7gXpJTC4E7k8hbbCSrtLPxkb1FyOJqP0n3LT9QcGkVg";
 
     const body: ActionPostRequest = await req.json();
 
@@ -116,7 +118,7 @@ export const POST = async (req: Request) => {
       ASSOCIATED_TOKEN_PROGRAM_ID
     );
 
-    const amountOfTokensToMint = parseInt(amount) * 10 ** decimals;
+    const amountOfTokensToMint = amount * 10 ** decimals;
 
     const metadata: TokenMetadata = {
       mint: mint.publicKey,
@@ -215,9 +217,11 @@ function validatedQueryParams(requestUrl: URL) {
   const metadataParams = requestUrl.searchParams.get("metadata");
   const metadata = metadataParams?.split(",");
   try {
-    if (metadata != undefined && metadata.length == 4) {
-      const [name, symbol, uri, amount] = metadata;
-      return [name, symbol, uri, amount];
+    if (metadata != undefined && metadata.length == 3) {
+      const name = decodeURI(metadata[0]);
+      const symbol = decodeURI(metadata[1]);
+      const amount = parseInt(metadata[2]);
+      return { name, symbol, amount };
     } else {
       throw "Invalid input query parameter";
     }
