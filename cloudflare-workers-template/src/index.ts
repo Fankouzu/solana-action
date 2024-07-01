@@ -5,6 +5,7 @@ import {
 } from "@solana/actions";
 import {
   Connection,
+  LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   TransactionMessage,
@@ -68,7 +69,7 @@ async function prepareTransaction(
   const transferIx = SystemProgram.transfer({
     fromPubkey: payer,
     toPubkey: toPubkey,
-    lamports: amount,
+    lamports: amount * LAMPORTS_PER_SOL,
   });
 
   const blockhash = await connection
