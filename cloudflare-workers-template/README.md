@@ -1,5 +1,7 @@
 # 通过模版创建Solana action
 
+Fork这个仓库，然后在你自己的仓库中点击下面的按钮
+
 [![Deploy with Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Fankouzu/solana-action/tree/main/cloudflare-workers-template)
 
 ## 设置
