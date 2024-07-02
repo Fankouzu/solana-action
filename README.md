@@ -2,7 +2,7 @@
 
 一键部署：
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Fankouzu/solana-action&env=RECIPIENT,BASE_AMOUNT,AVATAR,TITLE,DESCRIPTION&envDescription=Variables%20to%20setup%20your%20own%20information&envLink=https://github.com/Fankouzu/solana-action&project-name=my-blink-donate-action&repository-name=my-blink-donate-action&demo-title=Solana%20blink%20action&demo-description=A%20solana%20blink%20action%20example%20using%20Next.js&demo-url=https://solana-action.vercel.com/api/actions/donate&demo-image=https%3A%2F%2Fucarecdn.com%2F078daf34-3a0a-465b-bda8-8b6715ba86bb%2F-%2Fpreview%2F557x851%2F)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Fankouzu/solana-action&env=RECIPIENT,BASE_AMOUNT,AVATAR,TITLE,DESCRIPTION&envDescription=Variables%20to%20setup%20your%20own%20information&envLink=https://github.com/Fankouzu/solana-action&project-name=my-blink-donate-action&repository-name=my-blink-donate-action&demo-title=Solana%20blink%20action&demo-description=A%20solana%20blink%20action%20example%20using%20Next.js&demo-url=https://solana-action.vercel.com/api/actions/donate&demo-image=https://raw.githubusercontent.com/Fankouzu/solana-action/main/public/solana_devs.jpg)
 
 在vercel修改环境变量配置
 
