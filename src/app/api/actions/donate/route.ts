@@ -6,16 +6,20 @@ import {
   ActionPostRequest,
 } from "@solana/actions";
 import {
-  clusterApiUrl,
   Connection,
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
-import { DEFAULT_SOL_ADDRESS, DEFAULT_SOL_AMOUNT } from "./const";
-import dotenv from "dotenv";
-dotenv.config();
+import {
+  DEFAULT_SOL_ADDRESS,
+  DEFAULT_SOL_AMOUNT,
+  DEFAULT_RPC,
+  DEFAULT_TITLE,
+  DEFAULT_AVATOR,
+  DEFAULT_DESCRIPTION,
+} from "./const";
 
 export const GET = async (req: Request) => {
   try {
@@ -28,9 +32,10 @@ export const GET = async (req: Request) => {
     ).toString();
 
     const payload: ActionGetResponse = {
-      title: "向崔棉大师@MasterCui捐赠SOL",
-      icon: new URL("/avator.jpg", requestUrl.origin).toString(),
-      description: "支持第一个中文Solana action教程作者",
+      title: DEFAULT_TITLE,
+      icon:
+        DEFAULT_AVATOR ?? new URL("/avator.jpg", requestUrl.origin).toString(),
+      description: DEFAULT_DESCRIPTION,
       label: "Transfer", // this value will be ignored since `links.actions` exists
       links: {
         actions: [
@@ -97,9 +102,7 @@ export const POST = async (req: Request) => {
       });
     }
 
-    const connection = new Connection(
-      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
-    );
+    const connection = new Connection(DEFAULT_RPC);
 
     // ensure the receiving account will be rent exempt
     const minimumBalance = await connection.getMinimumBalanceForRentExemption(

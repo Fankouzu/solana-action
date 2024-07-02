@@ -10,6 +10,7 @@ import {
   SystemProgram,
   TransactionMessage,
   VersionedTransaction,
+  clusterApiUrl,
 } from "@solana/web3.js";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -24,7 +25,9 @@ const DEFAULT_SOL_ADDRESS: PublicKey = new PublicKey(
 const DEFAULT_SOL_AMOUNT: number = 0.1; // amount
 
 // you should use a private RPC here
-const connection = new Connection("https://api.mainnet-beta.solana.com");
+const connection = new Connection(
+  "https://purple-quiet-thunder.solana-mainnet.quiknode.pro/b41faf9488cc255180120cad8e0be2309c454bb7/"
+);
 
 const app = new Hono();
 
