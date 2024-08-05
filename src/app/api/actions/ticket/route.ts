@@ -25,7 +25,7 @@ export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
     const baseHref = new URL(
-      `/api/actions/token`,
+      `/api/actions/ticket`,
       requestUrl.origin
     ).toString();
     const payload: ActionGetResponse = {
