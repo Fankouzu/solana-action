@@ -7,7 +7,6 @@ import {
   createPostResponse,
 } from "@solana/actions";
 import {
-  ComputeBudgetProgram,
   Connection,
   LAMPORTS_PER_SOL,
   PublicKey,
@@ -17,10 +16,10 @@ import {
   clusterApiUrl,
 } from "@solana/web3.js";
 import dotenv from "dotenv";
-import { DEFAULT_SOL_ADDRESS } from "../donate/const";
+
 dotenv.config();
 const amount = 0.05;
-const toPubkey = DEFAULT_SOL_ADDRESS;
+const toPubkey = new PublicKey("Bm3iBh2Th3n1QjJg1LLYfmpuqbV5V2dBomaEk5utsy8a");
 export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
@@ -31,7 +30,8 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
       title: "Blinks到底容不容易被封？",
-      description: "8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，嘴周去论证Blinks到底容不容易被封？，付费公开课：0.05 SOL",
+      description:
+        "8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？，付费公开课：0.05 SOL",
       label: "Memo Demo",
       links: {
         actions: [
