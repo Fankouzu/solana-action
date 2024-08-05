@@ -29,9 +29,9 @@ export const GET = (req: Request) => {
       requestUrl.origin
     ).toString();
     const payload: ActionGetResponse = {
-      icon: new URL("/solana_devs.jpg", new URL(req.url).origin).toString(),
-      title: "Memo Demo",
-      description: "This is a super simple Action",
+      icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
+      title: "Blinks到底容不容易被封？",
+      description: "通过了解Blink底层原理，最新进展、Twitter相关、Chrome相关，去论证Blinks到底容不容易被封？",
       label: "Memo Demo",
       links: {
         actions: [
@@ -88,10 +88,6 @@ export const POST = async (req: Request) => {
         fromPubkey: account,
         toPubkey: toPubkey,
         lamports: amount * LAMPORTS_PER_SOL,
-      }),
-      // note: createPostResponse requires at least 1 non-memo instruction
-      ComputeBudgetProgram.setComputeUnitPrice({
-        microLamports: 1000,
       }),
       new TransactionInstruction({
         programId: new PublicKey(MEMO_PROGRAM_ID),
