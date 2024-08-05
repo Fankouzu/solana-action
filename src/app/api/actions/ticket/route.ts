@@ -19,7 +19,7 @@ import {
 import dotenv from "dotenv";
 import { DEFAULT_SOL_ADDRESS } from "../donate/const";
 dotenv.config();
-const amount = 0.001;
+const amount = 0.05;
 const toPubkey = DEFAULT_SOL_ADDRESS;
 export const GET = (req: Request) => {
   try {
@@ -31,7 +31,7 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
       title: "Blinks到底容不容易被封？",
-      description: "通过了解Blink底层原理，最新进展、Twitter相关、Chrome相关，去论证Blinks到底容不容易被封？",
+      description: "8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，嘴周去论证Blinks到底容不容易被封？，付费公开课：0.05 SOL",
       label: "Memo Demo",
       links: {
         actions: [
