@@ -83,25 +83,24 @@ export const POST = async (req: Request) => {
     const requestUrl = new URL(req.url);
     const email = requestUrl.searchParams.get("email") || "";
     const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
-    if (!regEmail.test(email)) {
-     return Response.json("An unknow error occurred", { status: 502 });
+    if (regEmail.test(email)) {
+      transaction.feePayer = account;
+
+      const connection = new Connection(
+        process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
+      );
+      transaction.recentBlockhash = (
+        await connection.getLatestBlockhash()
+      ).blockhash;
+      const payload: ActionPostResponse = await createPostResponse({
+        fields: {
+          transaction,
+        },
+      });
+      return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
+    } else {
+      return Response.json("An unknow error occurred", { status: 502 });
     }
-
-    transaction.feePayer = account;
-
-    const connection = new Connection(
-      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
-    );
-    transaction.recentBlockhash = (
-      await connection.getLatestBlockhash()
-    ).blockhash;
-    const payload: ActionPostResponse = await createPostResponse({
-      fields: {
-        transaction,
-      },
-    });
-
-    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
   } catch (err) {
     return Response.json("An unknow error occurred", { status: 400 });
   }
