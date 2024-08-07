@@ -30,8 +30,7 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
       title: "Blinks到底容不容易被封？",
-      description:
-        `8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？
+      description: `8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？
 付费公开课：0.05 SOL`,
       label: "Memo Demo",
       links: {
@@ -83,19 +82,10 @@ export const POST = async (req: Request) => {
     const transaction = new Transaction();
     const requestUrl = new URL(req.url);
     const email = requestUrl.searchParams.get("email") || "";
-
-    transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: account,
-        toPubkey: toPubkey,
-        lamports: amount * LAMPORTS_PER_SOL,
-      }),
-      new TransactionInstruction({
-        programId: new PublicKey(MEMO_PROGRAM_ID),
-        data: Buffer.from(email, "utf8"),
-        keys: [],
-      })
-    );
+    const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+    if (!regEmail.test(email)) {
+      return false;
+    }
 
     transaction.feePayer = account;
 
