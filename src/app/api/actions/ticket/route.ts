@@ -30,7 +30,8 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
       title: "Blinks到底容不容易被封？",
-      description: `8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？
+      description:
+        `8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？
 付费公开课：0.05 SOL`,
       label: "Memo Demo",
       links: {
@@ -82,25 +83,35 @@ export const POST = async (req: Request) => {
     const transaction = new Transaction();
     const requestUrl = new URL(req.url);
     const email = requestUrl.searchParams.get("email") || "";
-    const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
-    if (regEmail.test(email)) {
-      transaction.feePayer = account;
 
-      const connection = new Connection(
-        process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
-      );
-      transaction.recentBlockhash = (
-        await connection.getLatestBlockhash()
-      ).blockhash;
-      const payload: ActionPostResponse = await createPostResponse({
-        fields: {
-          transaction,
-        },
-      });
-      return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
-    } else {
-      return Response.json("An unknow error occurred", { status: 502 });
-    }
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: account,
+        toPubkey: toPubkey,
+        lamports: amount * LAMPORTS_PER_SOL,
+      }),
+      new TransactionInstruction({
+        programId: new PublicKey(MEMO_PROGRAM_ID),
+        data: Buffer.from(email, "utf8"),
+        keys: [],
+      })
+    );
+
+    transaction.feePayer = account;
+
+    const connection = new Connection(
+      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
+    );
+    transaction.recentBlockhash = (
+      await connection.getLatestBlockhash()
+    ).blockhash;
+    const payload: ActionPostResponse = await createPostResponse({
+      fields: {
+        transaction,
+      },
+    });
+
+    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
   } catch (err) {
     return Response.json("An unknow error occurred", { status: 400 });
   }
