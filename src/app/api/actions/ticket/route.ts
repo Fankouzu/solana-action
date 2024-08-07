@@ -84,7 +84,7 @@ export const POST = async (req: Request) => {
     const email = requestUrl.searchParams.get("email") || "";
     const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
     if (!regEmail.test(email)) {
-      return false;
+     return Response.json("An unknow error occurred", { status: 502 });
     }
 
     transaction.feePayer = account;
