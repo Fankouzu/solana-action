@@ -28,11 +28,11 @@ export const GET = (req: Request) => {
       requestUrl.origin
     ).toString();
     const payload: ActionGetResponse = {
-      icon: new URL("/event_20240808.jpg", new URL(req.url).origin).toString(),
-      title: "Blinks到底容不容易被封？",
+      icon: new URL("/event_20240829.jpg", new URL(req.url).origin).toString(),
+      title: "Blinks玩起来 丨03丨Blinks如何更好的赋能项目？",
       disabled:true,
       description:
-        `8月8日20:00（UTC+8），Solana技术专家带你了解Blink底层原理，最新进展、Twitter相关、Chrome相关，最终去论证Blinks到底容不容易被封？
+        `8月29日20:00（UTC+8），聚集最早一批尝鲜Blinks应用场景的项目方，从项目的角度去理解：Blinks如何更好的赋能项目？
 付费公开课：0.05 SOL`,
       label: "Memo Demo",
       links: {
@@ -44,7 +44,7 @@ export const GET = (req: Request) => {
               {
                 name: "email",
                 label: "请输入接收门票的邮箱",
-                required: true,
+                required: false,
               },
             ],
           },
