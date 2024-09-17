@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@solana/actions": "^1.0.2",
+    "@solana/actions": "^1.6.4",
     "@solana/spl-token": "^0.4.7",
     "@solana/spl-token-metadata": "^0.1.4",
     "@solana/web3.js": "^1.93.2",
