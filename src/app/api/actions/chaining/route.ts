@@ -59,6 +59,7 @@ export const GET = async (req: Request) => {
 export const OPTIONS = async () => Response.json(null, { headers });
 
 export const POST = async (req: Request) => {
+  console.log("POST method called"); 
   try {
     /**
      * we can type the `body.data` to what fields we expect from the GET response above
@@ -95,7 +96,7 @@ export const POST = async (req: Request) => {
     }
 
     const connection = new Connection(
-      process.env.SOLANA_RPC! || clusterApiUrl("devnet"),
+      process.env.RPC_URL_DEV! || clusterApiUrl("devnet"),
     );
 
     const transaction = new Transaction().add(
