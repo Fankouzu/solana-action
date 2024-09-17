@@ -34,7 +34,7 @@ export const GET = async (req: Request) => {
     links: {
       actions: [
         {
-          href: "/api/actions/chaining-basics",
+          href: "/api/actions/chaining",
           label: "Send Memo",
           parameters: [
             {
