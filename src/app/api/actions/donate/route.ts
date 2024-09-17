@@ -6,7 +6,6 @@ import {
   ActionPostRequest,
 } from "@solana/actions";
 import {
-  clusterApiUrl,
   Connection,
   LAMPORTS_PER_SOL,
   PublicKey,

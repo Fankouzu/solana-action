@@ -22,9 +22,7 @@ dotenv.config();
 const amount = 0.05;
 const toPubkey = new PublicKey("Bm3iBh2Th3n1QjJg1LLYfmpuqbV5V2dBomaEk5utsy8a");
 // create the standard headers for this route (including CORS)
-const headers = createActionHeaders(
-  { chainId: "devnet", actionVersion: "1" }
-);
+const headers = createActionHeaders({ chainId: "devnet", actionVersion: "1" });
 export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
@@ -88,7 +86,6 @@ export const POST = async (req: Request) => {
     const transaction = new Transaction();
     const requestUrl = new URL(req.url);
     const email = requestUrl.searchParams.get("email") || "";
-    console.log("email:",email); 
 
     transaction.add(
       SystemProgram.transfer({
@@ -106,7 +103,7 @@ export const POST = async (req: Request) => {
     transaction.feePayer = account;
 
     const connection = new Connection(
-      process.env.RPC_URL_DEV ?? clusterApiUrl("devnet")
+      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
     );
     // 添加重试逻辑
     const getRecentBlockhash = async (retries = 3) => {
