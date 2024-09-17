@@ -1,112 +1,80 @@
-/**
- * Solana Actions Example
- */
-
 import {
-  ActionPostResponse,
-  createPostResponse,
-  MEMO_PROGRAM_ID,
+  ACTIONS_CORS_HEADERS,
   ActionGetResponse,
   ActionPostRequest,
-  createActionHeaders,
-  ActionError,
+  ActionPostResponse,
+  MEMO_PROGRAM_ID,
+  createPostResponse,
 } from "@solana/actions";
 import {
-  clusterApiUrl,
   ComputeBudgetProgram,
   Connection,
   PublicKey,
   Transaction,
   TransactionInstruction,
+  clusterApiUrl,
 } from "@solana/web3.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-// create the standard headers for this route (including CORS)
-const headers = createActionHeaders();
-
-export const GET = async (req: Request) => {
+export const GET = (req: Request) => {
   const payload: ActionGetResponse = {
-    type: "action",
-    title: "Actions Example - Simple On-chain Memo",
     icon: new URL("/solana_devs.jpg", new URL(req.url).origin).toString(),
-    description: "Send a message on-chain using a Memo",
-    label: "Send Memo",
+    title: "Memo Demo",
+    description: "This is a super simple Action",
+    label: "Memo Demo",
   };
-
   return Response.json(payload, {
-    headers,
+    headers: ACTIONS_CORS_HEADERS,
   });
 };
 
-// DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD
-// THIS WILL ENSURE CORS WORKS FOR BLINKS
-export const OPTIONS = async () => Response.json(null, { headers });
+export const OPTIONS = GET;
 
 export const POST = async (req: Request) => {
   try {
-    const body: ActionPostRequest<{ memo: string }> & {
-      params: ActionPostRequest<{ memo: string }>["data"];
-    } = await req.json();
+    const body: ActionPostRequest = await req.json();
 
     let account: PublicKey;
     try {
       account = new PublicKey(body.account);
     } catch (err) {
-      throw 'Invalid "account" provided';
+      return new Response("Invalid 'account' provided", {
+        status: 400,
+        headers: ACTIONS_CORS_HEADERS,
+      });
     }
 
-    // read in the user input `memo` value
-    // todo: see note above on `body`
-    const memoMessage = (body.params?.memo || body.data?.memo) as
-      | string
-      | undefined;
+    const transaction = new Transaction();
 
-    // todo: for simplicity, we are not doing any much validation on this user input
-    if (!memoMessage) {
-      throw 'Invalid "memo" provided';
-    }
-
-    const connection = new Connection(
-      process.env.SOLANA_RPC! || clusterApiUrl("devnet"),
-    );
-
-    const transaction = new Transaction().add(
-      // note: `createPostResponse` requires at least 1 non-memo instruction
+    transaction.add(
+      // note: createPostResponse requires at least 1 non-memo instruction
       ComputeBudgetProgram.setComputeUnitPrice({
         microLamports: 1000,
       }),
       new TransactionInstruction({
         programId: new PublicKey(MEMO_PROGRAM_ID),
-        data: Buffer.from("this is a simple memo message2", "utf8"),
+        data: Buffer.from("this is a simple memo message", "utf8"),
         keys: [],
-      }),
+      })
     );
 
-    // set the end user as the fee payer
     transaction.feePayer = account;
 
+    const connection = new Connection(
+      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
+    );
     transaction.recentBlockhash = (
       await connection.getLatestBlockhash()
     ).blockhash;
-
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
-        message: "Post this memo on-chain",
       },
-      // no additional signers are required for this transaction
-      // signers: [],
     });
 
-    return Response.json(payload, {
-      headers,
-    });
+    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
   } catch (err) {
-    console.log(err);
-    let actionError: ActionError = { message: "An unknown error occurred" };
-    if (typeof err == "string") actionError.message = err;
-    return Response.json(actionError, {
-      status: 400,
-      headers,
-    });
+    return Response.json("An unknow error occurred", { status: 400 });
   }
 };

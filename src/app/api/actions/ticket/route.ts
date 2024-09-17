@@ -4,6 +4,7 @@ import {
   ActionPostRequest,
   ActionPostResponse,
   MEMO_PROGRAM_ID,
+  createActionHeaders,
   createPostResponse,
 } from "@solana/actions";
 import {
@@ -20,6 +21,10 @@ import dotenv from "dotenv";
 dotenv.config();
 const amount = 0.05;
 const toPubkey = new PublicKey("Bm3iBh2Th3n1QjJg1LLYfmpuqbV5V2dBomaEk5utsy8a");
+// create the standard headers for this route (including CORS)
+const headers = createActionHeaders(
+  { chainId: "devnet", actionVersion: "1" }
+);
 export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
@@ -30,7 +35,7 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/event_20240829.jpg", new URL(req.url).origin).toString(),
       title: "Blinks玩起来 丨03丨Blinks如何更好的赋能项目？",
-      disabled:true,
+      disabled: false,
       description:
         `8月29日20:00（UTC+8），聚集最早一批尝鲜Blinks应用场景的项目方，从项目的角度去理解：Blinks如何更好的赋能项目？
 付费公开课：0.05 SOL`,
@@ -101,7 +106,7 @@ export const POST = async (req: Request) => {
     transaction.feePayer = account;
 
     const connection = new Connection(
-      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
+      process.env.RPC_URL_DEV! || clusterApiUrl("devnet"),
     );
     transaction.recentBlockhash = (
       await connection.getLatestBlockhash()
@@ -109,6 +114,19 @@ export const POST = async (req: Request) => {
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
+        message: "Post this memo on-chain",
+        links: {
+          /**
+           * this `href` will receive a POST request (callback)
+           * with the confirmed `signature`
+           *
+           * you could also use query params to track whatever step you are on
+           */
+          next: {
+            type: "post",
+            href: "/api/actions/chaining/next-action",
+          },
+        },
       },
     });
 
