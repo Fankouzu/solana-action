@@ -88,6 +88,7 @@ export const POST = async (req: Request) => {
     const transaction = new Transaction();
     const requestUrl = new URL(req.url);
     const email = requestUrl.searchParams.get("email") || "";
+    console.log("email:",email); 
 
     transaction.add(
       SystemProgram.transfer({
@@ -105,7 +106,7 @@ export const POST = async (req: Request) => {
     transaction.feePayer = account;
 
     const connection = new Connection(
-      process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
+      process.env.RPC_URL_DEV ?? clusterApiUrl("devnet")
     );
     // 添加重试逻辑
     const getRecentBlockhash = async (retries = 3) => {
