@@ -22,7 +22,7 @@ dotenv.config();
 const amount = 0.05;
 const toPubkey = new PublicKey("Bm3iBh2Th3n1QjJg1LLYfmpuqbV5V2dBomaEk5utsy8a");
 // create the standard headers for this route (including CORS)
-const headers = createActionHeaders({ chainId: "devnet", actionVersion: "1" });
+const headers = createActionHeaders({ chainId: "mainnet", actionVersion: "1" });
 export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);

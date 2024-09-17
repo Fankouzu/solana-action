@@ -17,7 +17,7 @@ export const GET = async () => {
   };
 
   return Response.json(payload, {
-    headers: createActionHeaders({ chainId: "devnet", actionVersion: "1" }),
+    headers: createActionHeaders({ chainId: "mainnet", actionVersion: "1" }),
   });
 };
 
