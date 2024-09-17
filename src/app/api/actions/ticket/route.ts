@@ -35,7 +35,7 @@ export const GET = (req: Request) => {
     const payload: ActionGetResponse = {
       icon: new URL("/image.png", new URL(req.url).origin).toString(),
       title: "课程标题？",
-      disabled: true,
+      disabled: false,
       description:
         `课程简介`,
       label: "Demo",
