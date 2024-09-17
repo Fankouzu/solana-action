@@ -131,7 +131,7 @@ export const POST = async (req: Request) => {
            */
           next: {
             type: "post",
-            href: "/api/actions/chaining-basics/next-action",
+            href: "/api/actions/chaining/next-action",
           },
         },
       },
