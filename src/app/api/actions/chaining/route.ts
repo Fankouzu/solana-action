@@ -21,7 +21,9 @@ import {
 } from "@solana/web3.js";
 
 // create the standard headers for this route (including CORS)
-const headers = createActionHeaders();
+const headers = createActionHeaders(
+  { chainId: "devnet", actionVersion: "1" }
+);
 
 export const GET = async (req: Request) => {
   const payload: ActionGetResponse = {
