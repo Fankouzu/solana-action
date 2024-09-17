@@ -1,5 +1,5 @@
 {
-  "name": "solana-blink",
+  "name": "solana-action",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,11 +10,9 @@
   },
   "dependencies": {
     "@solana/actions": "^1.6.4",
-    "@solana/spl-token": "^0.4.7",
-    "@solana/spl-token-metadata": "^0.1.4",
-    "@solana/web3.js": "^1.93.2",
+    "@solana/web3.js": "^1.95.3",
     "dotenv": "^16.4.5",
-    "next": "14.2.4",
+    "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -23,7 +21,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.4",
+    "eslint-config-next": "14.2.11",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

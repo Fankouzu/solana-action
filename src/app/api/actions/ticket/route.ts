@@ -4,6 +4,7 @@ import {
   ActionPostRequest,
   ActionPostResponse,
   MEMO_PROGRAM_ID,
+  createActionHeaders,
   createPostResponse,
 } from "@solana/actions";
 import {
@@ -20,6 +21,10 @@ import dotenv from "dotenv";
 dotenv.config();
 const amount = 0.05;
 const toPubkey = new PublicKey("Bm3iBh2Th3n1QjJg1LLYfmpuqbV5V2dBomaEk5utsy8a");
+// create the standard headers for this route (including CORS)
+const headers = createActionHeaders(
+  { chainId: "devnet", actionVersion: "1" }
+);
 export const GET = (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
@@ -28,13 +33,12 @@ export const GET = (req: Request) => {
       requestUrl.origin
     ).toString();
     const payload: ActionGetResponse = {
-      icon: new URL("/event_20240829.jpg", new URL(req.url).origin).toString(),
-      title: "Blinks玩起来 丨03丨Blinks如何更好的赋能项目？",
-      disabled:false,
+      icon: new URL("/image.png", new URL(req.url).origin).toString(),
+      title: "课程标题？",
+      disabled: true,
       description:
-        `8月29日20:00（UTC+8），聚集最早一批尝鲜Blinks应用场景的项目方，从项目的角度去理解：Blinks如何更好的赋能项目？
-付费公开课：0.05 SOL`,
-      label: "Memo Demo",
+        `课程简介`,
+      label: "Demo",
       links: {
         actions: [
           {
@@ -52,7 +56,7 @@ export const GET = (req: Request) => {
       },
     };
     return Response.json(payload, {
-      headers: ACTIONS_CORS_HEADERS,
+      headers,
     });
   } catch (err) {
     console.log(err);
@@ -103,17 +107,30 @@ export const POST = async (req: Request) => {
     const connection = new Connection(
       process.env.RPC_URL_MAINNET ?? clusterApiUrl("mainnet-beta")
     );
-    transaction.recentBlockhash = (
-      await connection.getLatestBlockhash()
-    ).blockhash;
+    // 添加重试逻辑
+    const getRecentBlockhash = async (retries = 3) => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const { blockhash } = await connection.getLatestBlockhash();
+          return blockhash;
+        } catch (error) {
+          console.error(`获取最新区块哈希失败，尝试次数：${i + 1}`, error);
+          if (i === retries - 1) throw error;
+          await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒后重试
+        }
+      }
+    };
+    transaction.recentBlockhash = await getRecentBlockhash();
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
       },
     });
-
-    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
+    return Response.json(payload, {
+      headers,
+    });
   } catch (err) {
+    console.log(err);
     return Response.json("An unknow error occurred", { status: 400 });
   }
 };
