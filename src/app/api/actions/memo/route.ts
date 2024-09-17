@@ -43,13 +43,26 @@ export const OPTIONS = async () => Response.json(null, { headers });
 
 export const POST = async (req: Request) => {
   try {
-    const body: ActionPostRequest = await req.json();
+    const body: ActionPostRequest<{ memo: string }> & {
+      params: ActionPostRequest<{ memo: string }>["data"];
+    } = await req.json();
 
     let account: PublicKey;
     try {
       account = new PublicKey(body.account);
     } catch (err) {
       throw 'Invalid "account" provided';
+    }
+
+    // read in the user input `memo` value
+    // todo: see note above on `body`
+    const memoMessage = (body.params?.memo || body.data?.memo) as
+      | string
+      | undefined;
+
+    // todo: for simplicity, we are not doing any much validation on this user input
+    if (!memoMessage) {
+      throw 'Invalid "memo" provided';
     }
 
     const connection = new Connection(
